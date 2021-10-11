@@ -277,6 +277,29 @@ With a prefix argument, sets KILL-BUFFER and  kill the buffer instead."
   (interactive "P")
   (quit-window kill-buffer))
 
+
+;; Project navigation
+(defvar repo-project-regexp "^\\(?1:project\\) \\(?2:[^ ]+\\)/\\W+")
+
+(defun repo-next-project ()
+  "Move to next project in repo buffer."
+  (interactive)
+  (let ((pos (point)))
+    (save-excursion
+      (forward-line)
+      (when (re-search-forward repo-project-regexp nil t)
+        (setq pos (point))))
+    (when (> pos (point))
+      (goto-char pos)
+      (beginning-of-line))))
+
+(defun repo-previous-project ()
+  "Move to previous project in repo buffer."
+  (interactive)
+  (re-search-backward repo-project-regexp nil t))
+
+
+;; Font-lock
 (defvar repo-font-lock-defaults
   '(("^\\(?1:project\\) \\(?2:[^ ]+\\)/\\W+\\(?3:branch \\(?4:\\w+\\)\\)" (1 font-lock-function-name-face) (2 font-lock-variable-name-face) (4 font-lock-variable-name-face))
     ("^\\(?1:project\\) \\(?2:[^ ]+\\)/\\W+\\(?3:(\\*\\*\\* NO BRANCH \\*\\*\\*)\\)" (1 font-lock-function-name-face) (2 font-lock-variable-name-face) (3 font-lock-comment-face))
@@ -294,7 +317,13 @@ With a prefix argument, sets KILL-BUFFER and  kill the buffer instead."
   (setq repo-mode-map (make-sparse-keymap))
   (define-key repo-mode-map (kbd "g") (function revert-buffer))
   (define-key repo-mode-map (kbd "RET") (function repo-find))
-  (define-key repo-mode-map (kbd "q") (function repo-status-bury-buffer)))
+  (define-key repo-mode-map (kbd "q") (function repo-status-bury-buffer))
+  (define-key repo-mode-map (kbd "p") (function previous-line))
+  (define-key repo-mode-map (kbd "n") (function next-line))
+  (define-key repo-mode-map (kbd "f") (function forward-char))
+  (define-key repo-mode-map (kbd "b") (function backward-char))
+  (define-key repo-mode-map (kbd "C-c C-p") (function repo-previous-project))
+  (define-key repo-mode-map (kbd "C-c C-n") (function repo-next-project)))
 
 (define-derived-mode repo-mode fundamental-mode "Repo"
   "A mode for repo status buffer."
