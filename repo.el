@@ -121,11 +121,11 @@ If point is on
   (save-excursion
     (goto-char (line-beginning-position))
     (cond ((looking-at "^ [-AMDRCTU][-md]\t\\(.*\\)")
-		   (let ((file (match-string 1))
-				 (project (progn (re-search-backward "project +\\([^ ]+\\)" nil t)
-								 (match-string 1))))
-			 (find-file (concat repo-workspace project file))))
-		  ((looking-at "project +\\([^ ]+\\)")
+                   (let ((file (match-string 1))
+                                 (project (progn (re-search-backward "project +\\([^ ]+\\)" nil t)
+                                                                 (match-string 1))))
+                         (find-file (concat repo-workspace project file))))
+                  ((looking-at "project +\\([^ ]+\\)")
            (let ((project (match-string 1)))
              (repo-call-vc-function (concat repo-workspace project))))
           ((looking-at-p "Manifest groups:") nil)
@@ -192,6 +192,7 @@ With a prefix argument prompt for a directory to be used as workspace."
   (let ((status-buffer (get-buffer (repo-status-buffer-name workspace))))
     (when status-buffer
       (switch-to-buffer status-buffer)))
+  (message "repo status @ %s" (file-name-nondirectory (directory-file-name workspace)))
   (repo-status-exec-info workspace))
 
 
