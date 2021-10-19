@@ -302,15 +302,16 @@ With a prefix argument, sets KILL-BUFFER and  kill the buffer instead."
 
 ;; Font-lock
 (defvar repo-font-lock-defaults
-  '(("^\\(?1:project\\) \\(?2:[^ ]+\\)/\\W+\\(?3:branch \\(?4:\\w+\\)\\)" (1 font-lock-function-name-face) (2 font-lock-variable-name-face) (4 font-lock-variable-name-face))
-    ("^\\(?1:project\\) \\(?2:[^ ]+\\)/\\W+\\(?3:(\\*\\*\\* NO BRANCH \\*\\*\\*)\\)" (1 font-lock-function-name-face) (2 font-lock-variable-name-face) (3 font-lock-comment-face))
-    ("^Workspace: +\\(.*\\)$" 1 font-lock-function-name-face)
-    ("^Manifest.* branch: +\\(.*\\)$" 1 font-lock-keyword-face)
-    ("^ \\(?1:--\\)" 1 font-lock-comment-face) ; Untracked changes
-    ("^ \\(?1:-\\)\\(?2:[amdrctu]\\)" (1 font-lock-comment-face)  (2 font-lock-builtin-face)) ; Only unstaged changes
-    ("^ \\(?1:[AMDRCTU]\\)\\(?2:-\\)" (1 font-lock-variable-name-face) (2 font-lock-comment-face)) ; Only staged changes
-    ("^ \\(?1:[AMDRCTU]\\)\\(?2:[amdrctu]\\)" (1 font-lock-variable-name-face) (2 font-lock-builtin-face)) ; Staged and unstaged changes in the same file
-    )
+  `((
+     ("^\\(?1:project\\) \\(?2:[^ ]+\\)/\\W+\\(?3:branch \\(?4:.*\\)\\)$" . ((1 font-lock-function-name-face) (2 font-lock-variable-name-face) (4 font-lock-variable-name-face)))
+     ("^\\(?1:project\\) \\(?2:[^ ]+\\)/\\W+\\(?3:(\\*\\*\\* NO BRANCH \\*\\*\\*)\\)" . ((1 font-lock-function-name-face) (2 font-lock-variable-name-face) (3 font-lock-comment-face)))
+     ("^Workspace: +\\(.*\\)$" . (1 font-lock-function-name-face))
+     ("^Manifest.* branch: +\\(.*\\)$" . (1 font-lock-keyword-face))
+     ("^ \\(?1:--\\)" . (1 font-lock-comment-face)) ; Untracked changes
+     ("^ \\(?1:-\\)\\(?2:[amdrctu]\\)" . ((1 font-lock-comment-face)  (2 font-lock-builtin-face))) ; Only unstaged changes
+     ("^ \\(?1:[AMDRCTU]\\)\\(?2:-\\)" . ((1 font-lock-variable-name-face) (2 font-lock-comment-face))) ; Only staged changes
+     ("^ \\(?1:[AMDRCTU]\\)\\(?2:[amdrctu]\\)" . ((1 font-lock-variable-name-face) (2 font-lock-builtin-face))) ; Staged and unstaged changes in the same file
+     ))
   "Keywords for repo status buffer syntax highlighting.")
 
 (defvar repo-mode-map nil "Keymap for repo-mode.")
