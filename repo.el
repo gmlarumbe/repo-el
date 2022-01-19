@@ -332,7 +332,8 @@ With a prefix argument, sets KILL-BUFFER and  kill the buffer instead."
   (setq-local font-lock-defaults repo-font-lock-defaults)
   (setq-local revert-buffer-function (function repo-revert-buffer))
   (setq-local repo-workspace default-directory)
-  (read-only-mode))
+  (read-only-mode)
+  (view-mode -1))
 
 
 (provide 'repo)
